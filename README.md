@@ -42,7 +42,7 @@ This Groovy script helps to quantify positive areas of overlapping among cells, 
  
 6. Finally, you will be enabled to check the outputs (``CSV table`` and ``ZIP RoiSets`` corresponding for each area of interest) in the output directory previously selected.
   <p align="center">
-    <img width="650" height="350" src="https://github.com/cnio-cmu-BioimageAnalysis/cellQuantification_code/assets/83207172/bcd520f9-fed0-44f6-aade-757450d05539">
+    <img width="650" height="100" src="https://github.com/cnio-cmu-BioimageAnalysis/cellQuantification_code/assets/83207172/bcd520f9-fed0-44f6-aade-757450d05539">
     </p>!
   
 
