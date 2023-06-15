@@ -1,6 +1,9 @@
 # cellQuantification_code
 This Groovy script helps to quantify positive areas of overlapping among cells, having as output the corresponding rois together with a quantification summary of positive areas of overlapping.
-
+## Download cellQuantification_code
+1. Go to the ``GitHub`` repository
+2. Click on ``<Code>``>``Download ZIP``
+3. The repo will be found at ``Downloads`` directory.
 ## Running cellQuantification_code in headless mode through ImageJ/Windows Windows Terminal (ALL parameters)
 
 ``ImageJ-win64.exe --ij2 --headless --run "/absolute_path/to/groovyscript/cellQuantification.groovy" "headless=true, inputFilesDir='/absolute_path/to/inputFiles/images',outputDir='/absolute_path/to/outputDirectory/results',applyDAPI=false,"``
