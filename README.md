@@ -4,6 +4,12 @@ This Groovy script helps to quantify positive areas of overlapping among cells, 
 1. Go to the ``GitHub`` repository
 2. Click on ``<Code>``>``Download ZIP``
 3. The repo will be found at ``Downloads`` directory.
+## Requirements
+-Activate ``IJPB-plugins`` from the ImageJ Update Site.
+ <p align="center">
+    <img width="600" height="340" src="https://github.com/cnio-cmu-BioimageAnalysis/cellQuantification_code/assets/83207172/cce12d4f-f071-45bc-9bec-1f6b5f1c4674">
+    </p>
+
 ## Running cellQuantification_code in headless mode through ImageJ/Windows Windows Terminal (ALL parameters)
 
 ``ImageJ-win64.exe --ij2 --headless --run "/absolute_path/to/groovyscript/cellQuantification.groovy" "headless=true, inputFilesDir='/absolute_path/to/inputFiles/images',outputDir='/absolute_path/to/outputDirectory/results',applyDAPI=false,"``
