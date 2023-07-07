@@ -9,12 +9,9 @@ import inra.ijpb.binary.BinaryImages
 
 // INPUT UI
 //
-#
-@File(label = "Input File Directory", style = "directory") inputFilesDir
-#
-@File(label = "Output directory", style = "directory") outputDir
-#
-@Boolean(label = "Apply DAPI?") applyDAPI
+#@File(label = "Input File Directory", style = "directory") inputFilesDir
+#@File(label = "Output directory", style = "directory") outputDir
+#@Boolean(label = "Apply DAPI?") applyDAPI
 
 
 // IDE
