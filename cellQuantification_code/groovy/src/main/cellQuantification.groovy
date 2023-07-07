@@ -182,7 +182,7 @@ for (def i = 0; i < listOfFiles.length; i++) {
                     /** Get Green within Red Area in pixels */
                     areaRedGreen = roiRedGreen.getStatistics().area;
                 }else{
-                    areaRedGreen = 0.0.toString()
+                    areaRedGreen = 0.0
                 }
                 /** Get Magenta Area in pixels */
                 def areaMagenta = roiMagenta.getStatistics().area;
@@ -191,7 +191,7 @@ for (def i = 0; i < listOfFiles.length; i++) {
                     /** Get Green within Red Area in pixels */
                     areaMagentaGreen = roiMagentaGreen.getStatistics().area;
                 }else{
-                    areaMagentaGreen = 0.0.toString()
+                    areaMagentaGreen = 0.0
                 }
 
                 rm.addRoi(roiRed)
