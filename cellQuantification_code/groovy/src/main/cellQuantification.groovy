@@ -9,9 +9,12 @@ import inra.ijpb.binary.BinaryImages
 
 // INPUT UI
 //
-#@File(label = "Input File Directory", style = "directory") inputFilesDir
-#@File(label = "Output directory", style = "directory") outputDir
-#@Boolean(label = "Apply DAPI?") applyDAPI
+#
+@File(label = "Input File Directory", style = "directory") inputFilesDir
+#
+@File(label = "Output directory", style = "directory") outputDir
+#
+@Boolean(label = "Apply DAPI?") applyDAPI
 
 
 // IDE
@@ -24,13 +27,14 @@ IJ.log("-Parameters selected: ")
 IJ.log("    -inputFileDir: " + inputFilesDir)
 IJ.log("    -outputDir: " + outputDir)
 IJ.log("                                                           ");
-/** Get files (images) from input directory */ def listOfFiles = inputFilesDir.listFiles();
+/** Get files (images) from input directory */
+def listOfFiles = inputFilesDir.listFiles();
 /** Define table to save results */
 def table = new ResultsTable();
 
 for (def i = 0; i < listOfFiles.length; i++) {
 
-    def rm  = new RoiManager(false);
+    def rm = new RoiManager(false);
 
     if (!listOfFiles[i].getName().contains("DS")) {
         IJ.log("Analyzing file: " + listOfFiles[i].getName());
@@ -81,7 +85,7 @@ for (def i = 0; i < listOfFiles.length; i++) {
              3 pixels */
             IJ.run(chRed, "Median...", "radius=3")
             /** Apply area opening in binary images */
-            chRed = new ImagePlus( "",BinaryImages.areaOpening(chRed.getProcessor(), 250));
+            chRed = new ImagePlus("", BinaryImages.areaOpening(chRed.getProcessor(), 250));
             /** Create contour selection on red areas */
             IJ.run(chRed, "Create Selection", "");
             /** Get contour as ROI */
@@ -109,7 +113,7 @@ for (def i = 0; i < listOfFiles.length; i++) {
             def roiMagenta = chMagenta.getRoi();
 
             /** Check DAPI or not */
-            if(applyDAPI){
+            if (applyDAPI) {
                 /** Segment Blue Areas */
                 IJ.run(chBlue, "Auto Threshold", "method=Otsu ignore_black white");
                 /** Apply median filter to remove background areas below
@@ -122,14 +126,13 @@ for (def i = 0; i < listOfFiles.length; i++) {
 
                 /** Apply AND operator to keep those blue areas overlapping with red areas */
                 def roiBlueRed = new ShapeRoi(roiBlue).and(new ShapeRoi(roiRed)).shapeToRoi();
-                 /** Apply AND operator to keep those blue-red  areas overlapping with green areas */
+                /** Apply AND operator to keep those blue-red  areas overlapping with green areas */
                 def roiBlueRedGreen = new ShapeRoi(roiBlueRed).and(new ShapeRoi(roiGreen)).shapeToRoi();
-                 /** Apply AND operator to keep those blue areas overlapping with magenta areas */
+                /** Apply AND operator to keep those blue areas overlapping with magenta areas */
                 def roiBlueMagenta = new ShapeRoi(roiBlue).and(new ShapeRoi(roiMagenta)).shapeToRoi();
-                 /** Apply AND operator to keep those blue-magenta  areas overlapping with green areas */
+                /** Apply AND operator to keep those blue-magenta  areas overlapping with green areas */
                 def roiBlueMagentaGreen = new ShapeRoi(roiBlueMagenta).and(new ShapeRoi(roiGreen)).shapeToRoi();
-               
-               
+
 
                 /** Get Blue Area in pixels */
                 def areaBlue = roiBlue.getStatistics().area;
@@ -148,10 +151,10 @@ for (def i = 0; i < listOfFiles.length; i++) {
                 rm.addRoi(roiBlueRed)
                 rm.addRoi(roiBlueRedGreen)
                 rm.addRoi(roiMagenta)
-                 rm.addRoi(roiBlueMagenta)
+                rm.addRoi(roiBlueMagenta)
                 rm.addRoi(roiBlueMagentaGreen)
                 rm.runCommand("Save",
-                        outputDir.getAbsolutePath()+File.separator+imp.getShortTitle()+"_RoiSet.zip")
+                        outputDir.getAbsolutePath() + File.separator + imp.getShortTitle() + "_RoiSet.zip")
                 rm.reset()
 
                 table.incrementCounter();
@@ -162,16 +165,14 @@ for (def i = 0; i < listOfFiles.length; i++) {
                 table.setValue("Magenta Area", i, areaMagenta.toString())
                 table.setValue("Magenta overlap. Blue", i, areaBlueMagenta.toString())
                 table.setValue("Blue-Magenta overlap. Green", i, areaBlueMagentaGreen.toString())
-               
+
                 table.setValue("Normalized Ratio Green vs. Blue-Red Area", i, Double.valueOf(areaBlueRedGreen / areaBlueRed).toString())
                 table.setValue("% Ratio Green vs. Blue-Red Area", i, Double.valueOf((areaBlueRedGreen * 100) / areaBlueRed).toString())
                 table.setValue("Normalized Ratio Green vs. Blue-Magenta Area", i, Double.valueOf(areaBlueMagentaGreen / areaBlueMagenta).toString())
                 table.setValue("% Ratio Green vs. Blue-Magenta Area", i, Double.valueOf((areaBlueMagentaGreen * 100) / areaBlueMagenta).toString())
-                
-           
 
 
-            }else{
+            } else {
                 /** Apply AND operator to keep those red areas overlapping with green areas */
                 def roiRedGreen = new ShapeRoi(roiRed).and(new ShapeRoi(roiGreen)).shapeToRoi();
                 /** Apply AND operator to keep those magenta areas overlapping with green areas */
@@ -179,19 +180,31 @@ for (def i = 0; i < listOfFiles.length; i++) {
 
                 /** Get Red Area in pixels */
                 def areaRed = roiRed.getStatistics().area;
-                /** Get Green within Red Area in pixels */
-                def areaRedGreen = roiRedGreen.getStatistics().area;
-                 /** Get Magenta Area in pixels */
-                def areaMagenta = roiMagenta.getStatistics().area;
+                def areaRedGreen = null
+                if (roiRedGreen != null) {
+                    /** Get Green within Red Area in pixels */
+                    areaRedGreen = roiRedGreen.getStatistics().area;
+                }else{
+                    areaRedGreen = 0.0.toString()
+                }
                 /** Get Magenta Area in pixels */
-                def areaMagentaGreen = roiMagentaGreen.getStatistics().area;
+                def areaMagenta = roiMagenta.getStatistics().area;
+                def areaMagentaGreen = null
+                if (roiMagentaGreen != null) {
+                    /** Get Green within Red Area in pixels */
+                    areaMagentaGreen = roiMagentaGreen.getStatistics().area;
+                }else{
+                    areaMagentaGreen = 0.0.toString()
+                }
 
                 rm.addRoi(roiRed)
-                rm.addRoi(roiRedGreen)
+                if (roiRedGreen != null)
+                    rm.addRoi(roiRedGreen)
                 rm.addRoi(roiMagenta)
-                rm.addRoi(roiMagentaGreen)
+                if (roiMagentaGreen != null)
+                    rm.addRoi(roiMagentaGreen)
                 rm.runCommand("Save",
-                        outputDir.getAbsolutePath()+File.separator+imp.getShortTitle()+"_RoiSet.zip")
+                        outputDir.getAbsolutePath() + File.separator + imp.getShortTitle() + "_RoiSet.zip")
                 rm.reset()
 
                 table.incrementCounter();
@@ -200,18 +213,15 @@ for (def i = 0; i < listOfFiles.length; i++) {
                 table.setValue("Red overlap. Green", i, areaRedGreen.toString())
                 table.setValue("Magenta Area", i, areaMagenta.toString())
                 table.setValue("Magenta overlap. Green", i, areaMagentaGreen.toString())
-               
-               
+
+
                 table.setValue("Normalized Ratio Green vs. Red Area", i, Double.valueOf(areaRedGreen / areaRed).toString())
                 table.setValue("% Ratio Green vs. Red Area", i, Double.valueOf((areaRedGreen * 100) / areaRed).toString())
                 table.setValue("Normalized Ratio Green vs.Magenta Area", i, Double.valueOf(areaMagentaGreen / areaMagenta).toString())
                 table.setValue("% Ratio Green vs. Magenta Area", i, Double.valueOf((areaMagentaGreen * 100) / areaMagenta).toString())
-                
-              
+
 
             }
-
-
 
 
         } else {
