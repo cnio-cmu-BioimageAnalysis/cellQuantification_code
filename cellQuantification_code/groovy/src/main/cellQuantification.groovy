@@ -170,6 +170,7 @@ for (def i = 0; i < listOfFiles.length; i++) {
 
 
             } else {
+            if(roiRed != null && roiGreen != null){
                 /** Apply AND operator to keep those red areas overlapping with green areas */
                 def roiRedGreen = new ShapeRoi(roiRed).and(new ShapeRoi(roiGreen)).shapeToRoi();
                 /** Apply AND operator to keep those magenta areas overlapping with green areas */
@@ -217,7 +218,7 @@ for (def i = 0; i < listOfFiles.length; i++) {
                 table.setValue("Normalized Ratio Green vs.Magenta Area", i, Double.valueOf(areaMagentaGreen / areaMagenta).toString())
                 table.setValue("% Ratio Green vs. Magenta Area", i, Double.valueOf((areaMagentaGreen * 100) / areaMagenta).toString())
 
-
+                }
             }
 
 
